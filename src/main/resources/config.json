@@ -1,0 +1,5 @@
+{
+  "inputFile" : "/example_csv.csv",
+  "abboId" : "[abbo-id]",
+  "tokenBase64": "[token-base-64]"
+}
