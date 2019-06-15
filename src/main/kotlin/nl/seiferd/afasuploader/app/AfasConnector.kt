@@ -5,6 +5,7 @@ import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.WebClient
+import reactor.core.publisher.Mono
 
 
 class AfasConnector(val abboId: String, val token: String) {
@@ -16,13 +17,12 @@ class AfasConnector(val abboId: String, val token: String) {
         return "$AFAS_TOKEN $token"
     }
 
-    fun sendToAfas(message: String): ClientResponse? {
+    fun sendToAfas(message: String): Mono<ClientResponse>? {
         return toWebClient()
                 .post()
                 .header(AUTHORIZATION, authorizationHeader(token))
                 .body(BodyInserters.fromObject(message))
                 .exchange()
-                .block()
                 .also { println("I have just send $message") }
     }
 
