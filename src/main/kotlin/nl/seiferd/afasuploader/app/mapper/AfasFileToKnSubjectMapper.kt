@@ -3,6 +3,7 @@ package nl.seiferd.afasuploader.app.mapper
 import nl.seiferd.afasuploader.model.AfasFile
 import nl.seiferd.afasuploader.model.KnSubjectMessage
 import nl.seiferd.afasuploader.model.KnSubjectMessage.KnSubject.Element.Objects
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
@@ -39,7 +40,7 @@ class AfasFileToKnSubjectMapper {
     private fun fileAsBase64(fileName: String): String? {
         val pathToFile = Paths.get(fileName)
         if (Files.exists(pathToFile)) {
-            val bytes = Files.newBufferedReader(pathToFile).readLines().joinToString().toByteArray()
+            val bytes = File(pathToFile.toUri()).readBytes()
             return String(Base64.getEncoder().encode(bytes))
         } else {
             return null
