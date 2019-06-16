@@ -1,11 +1,8 @@
 package nl.seiferd.afasuploader.app
 
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
-import org.springframework.web.reactive.function.BodyInserters
-import org.springframework.web.reactive.function.client.ClientResponse
-import org.springframework.web.reactive.function.client.WebClient
-import reactor.core.publisher.Mono
+import com.sun.deploy.net.HttpRequest
+import khttp.post
+import khttp.responses.Response
 
 
 class AfasConnector(val abboId: String, val token: String) {
@@ -17,24 +14,15 @@ class AfasConnector(val abboId: String, val token: String) {
         return "$AFAS_TOKEN $token"
     }
 
-    fun sendToAfas(message: String): Mono<ClientResponse>? {
-        return toWebClient()
-                .post()
-                .header(AUTHORIZATION, authorizationHeader(token))
-                .body(BodyInserters.fromObject(message))
-                .exchange()
-                .also { println("I have just send $message") }
-    }
-
-    private fun toWebClient(): WebClient {
-        return WebClient.builder()
-                .baseUrl(buildUrl())
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build()
+    fun sendToAfas(index: Int, message: String) : Response {
+        return post(
+                buildUrl(),
+                mapOf(AUTHORIZATION to authorizationHeader(token), HttpRequest.CONTENT_TYPE to "application/json", "batch" to index.toString()),
+                data = message
+        )
     }
 
     private fun buildUrl(): String =
             "https://$abboId.rest.afas.online/ProfitRestServices/connectors/KnSubject"
-
 
 }

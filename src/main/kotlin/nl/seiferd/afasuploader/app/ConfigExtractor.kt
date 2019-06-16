@@ -1,12 +1,9 @@
 package nl.seiferd.afasuploader.app
 
-import nl.seiferd.afasuploader.model.Config
-import java.nio.file.Path
-import java.nio.file.Files
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
-import java.io.IOException
-
+import nl.seiferd.afasuploader.model.Config
+import java.nio.file.Files
+import java.nio.file.Path
 
 class ConfigExtractor {
 
