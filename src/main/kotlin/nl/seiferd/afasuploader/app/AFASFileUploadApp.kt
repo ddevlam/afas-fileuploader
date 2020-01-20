@@ -8,15 +8,16 @@ import nl.seiferd.afasuploader.model.KnSubjectMessage
 import java.nio.file.Paths
 
 fun main(args: Array<String>) {
+    val config = ConfigExtractor().extractConfig(Paths.get(args[0]))
+
     fun loadCsv(file: String): List<AfasFile> {
-        return CsvToAfasMapper().fromLines(
+        return CsvToAfasMapper(config.ignorable).fromLines(
                 CsvFileReader(file).readFile()
                         .drop(1)
         )
     }
 
     val gsonMapper = KnSubjectMessageToGsonMapper()
-    val config = ConfigExtractor().extractConfig(Paths.get(args[0]))
     val afasConnector = AfasConnector(config.abboId, config.tokenBase64)
 
     val loadedCsv = loadCsv(config.inputFile)

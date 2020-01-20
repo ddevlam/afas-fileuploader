@@ -2,7 +2,7 @@ package nl.seiferd.afasuploader.app.mapper
 
 import nl.seiferd.afasuploader.model.AfasFile
 
-class CsvToAfasMapper {
+class CsvToAfasMapper(val toIgnore: List<String>) {
 
     fun fromLines(string: List<String>): List<AfasFile> {
         return string.map(this::fromLine)
@@ -12,15 +12,21 @@ class CsvToAfasMapper {
         val split = string.split(";")
         var index = 0
 
+        val stId = split[index++]
+
         return AfasFile(
-                split[index++].toInt(),
+                stId.toInt(),
                 split[index++],
                 split[index++],
                 split[index++],
-                split[index++].toInt(),
+                property(stId, split[index++]),
                 split[index++],
                 split[index]
         )
+    }
+
+    fun property(stId: String, possible: String) :Int? {
+        return if (toIgnore.contains(stId)) null else possible.toInt()
     }
 
 }

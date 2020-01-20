@@ -5,7 +5,7 @@ class AfasFile(
         val ds: String,
         val da: String,
         val usId: String,
-        val fvF1: Int,
+        val fvF1: Int?,
         val fileName: String,
         val sfId: String
 )
